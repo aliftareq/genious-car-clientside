@@ -22,6 +22,7 @@ const NavBar = () => {
                     user?.uid
                         ? <div className='flex'>
                             <li className='font-semibold'><Link to='/login'>{user.email}</Link></li>
+                            <li className='font-semibold'><Link to='/orders'>Orders</Link></li>
                             <li onClick={handleLogOUt} className='font-semibold'><Link to='/login'>Log-out</Link></li>
                         </div>
                         : <li className='font-semibold'><Link to='/login'>Login</Link></li>

@@ -12,9 +12,11 @@ const AuthProvider = ({ children }) => {
 
     //handlers
     const createUser = (email, password) => {
+        setLoader(true)
         return createUserWithEmailAndPassword(auth, email, password)
     }
     const LoginWithemail = (email, password) => {
+        setLoader(true)
         return signInWithEmailAndPassword(auth, email, password)
     }
     const LogOut = () => {
@@ -25,6 +27,7 @@ const AuthProvider = ({ children }) => {
     useEffect(() => {
         const unSubscribe = onAuthStateChanged(auth, currentUser => {
             setUser(currentUser)
+            setLoader(false)
         });
 
         return () => unSubscribe()

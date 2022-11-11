@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { setAuthToken } from '../../../api/auth';
 import img from '../../../assets/images/login/login.svg'
 import { AuthContext } from '../../../Contexts/AuthProvider/AuthProvider';
 
@@ -19,7 +20,14 @@ const SignUp = () => {
 
         createUser(email, password)
             .then(result => {
-                console.log(result.user);
+                const user = result.user
+                console.log(user);
+                const currentUser = {
+                    email: user.email
+                }
+                //setting JWT token
+                setAuthToken(currentUser)
+                // navigating after successful sign up
                 navigate('/')
             })
             .catch(err => {

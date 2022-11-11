@@ -6,9 +6,16 @@ const Services = () => {
     const [services, setServices] = useState([])
     // useeffect
     useEffect(() => {
-        fetch('http://localhost:5000/services')
+        fetch('https://genious-car-server-with-jwt.vercel.app/services', {
+            headers: {
+                authorization: `Bearer ${localStorage.getItem('genius-Token')}`
+            },
+        })
             .then(res => res.json())
-            .then(data => setServices(data.data))
+            .then(data => {
+                console.log(data);
+                setServices(data.data)
+            })
     }, [])
     //console.log(services);
     return (

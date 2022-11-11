@@ -1,10 +1,13 @@
 import React, { useContext } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import loginpic from '../../../assets/images/login/login.svg'
 import { AuthContext } from '../../../Contexts/AuthProvider/AuthProvider';
+import SocialLogin from '../../SharedPages/SocialLogin/SocialLogin';
 const Login = () => {
     //navigae
     const navigate = useNavigate()
+    const location = useLocation()
+    const from = location?.state?.from?.pathname || '/'
     //context value
     const { LoginWithemail } = useContext(AuthContext)
     //handlers
@@ -16,8 +19,28 @@ const Login = () => {
 
         LoginWithemail(email, password)
             .then(result => {
-                console.log(result.user);
-                navigate('/')
+                //console.log(result.user);
+
+                const currentUser = {
+                    email: result.user.email
+                }
+                console.log(currentUser);
+
+                // get JWT token
+                fetch('https://genious-car-server-with-jwt.vercel.app/jwt', {
+                    method: 'POST',
+                    headers: {
+                        'content-type': 'application/json'
+                    },
+                    body: JSON.stringify(currentUser)
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        console.log(data)
+                        //setting the token into local storage (not the best practice)
+                        localStorage.setItem('genius-Token', data.token)
+                        navigate(from, { replace: true })
+                    })
             })
             .catch(err => {
                 console.log(err);
@@ -52,6 +75,7 @@ const Login = () => {
                             <input className="btn btn-primary" type="submit" value='login' />
                         </div>
                     </form>
+                    <SocialLogin></SocialLogin>
                     <p className='text-center py-4'>New to genius car? <Link className='text-orange-600' to='/register'>Register Now</Link></p>
                 </div>
             </div>

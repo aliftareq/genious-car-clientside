@@ -32,10 +32,11 @@ const CheckOut = () => {
         }
         console.log(order);
         // toast.success('successfully ordered')
-        fetch('http://localhost:5000/orders', {
+        fetch('https://genious-car-server-with-jwt.vercel.app/orders', {
             method: 'POST',
             headers: {
-                'content-type': 'application/json'
+                'content-type': 'application/json',
+                authorization: `Bearer ${localStorage.getItem('genius-Token')}`
             },
             body: JSON.stringify(order)
         })
